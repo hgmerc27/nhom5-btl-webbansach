@@ -5,8 +5,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.text import slugify
-
+from .models import SignUpForm
 from .models import Userprofile
+from .models import Rating
+from django.db.models import Avg
 
 from store.forms import ProductForm
 from store.models import Product, OrderItem, Order
@@ -100,22 +102,19 @@ def myaccount(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
 
         if form.is_valid():
             user = form.save()
 
             login(request, user)
 
-            userprofile = Userprofile.objects.create(user=user)
-
-            return redirect('frontpage')
+            return redirect('/')
     else:
-        form = UserCreationForm()
-    
-    return render(request, 'userprofile/signup.html', {
-        'form': form
-    })
+        form = SignUpForm()
+
+    return render(request, 'userprofile/signup.html', {'form': form})
+
 @login_required
 def edit_myaccount(request):
     if request.method == 'POST':
@@ -128,3 +127,20 @@ def edit_myaccount(request):
 
         return redirect('myaccount')
     return render(request, 'userprofile/edit_myaccount.html')
+
+@login_required
+def product_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+
+    if request.method == 'POST':
+        print(request.POST)
+        rating = int(request.POST.get('rating'))
+        Rating.objects.create(user=request.user, product=product, rating=rating)
+
+    average_rating = Rating.objects.filter(product=product).aggregate(Avg('rating'))
+    ratings = Rating.objects.filter(product=product)
+
+    # Print the ratings QuerySet
+    print(ratings)
+
+    return render(request, 'product_detail.html', {'product': product, 'average_rating': average_rating, 'ratings': ratings})

@@ -1,12 +1,41 @@
+{#{% extends 'core/base.html' %}#}
+{##}
+{#{% block title %}My account{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#<div class="max-w-6xl mx-auto p-6">#}
+{#    <h1 class="mb-5 text-3xl">My account</h1>#}
+{##}
+{#    <div class="space-y-3">#}
+{#        <p><strong>First name:</strong> {{ request.user.first_name }}</p>#}
+{#        <p><strong>Last name:</strong> {{ request.user.last_name }}</p>#}
+{#        <p><strong>Username:</strong> {{ request.user.username }}</p>#}
+{#        <p><strong>Email:</strong> {{ request.user.email }}</p>#}
+{#    </div>#}
+{##}
+{#    <a href="{% url 'edit_myaccount' %}" class="mt-4 inline-block py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Edit Account</a>#}
+{#    <a href="{% url 'logout' %}" class="mt-6 inline-block py-2 px-4 bg-red-400 rounded-lg text-white hover:bg-red-500">Log out</a>#}
+{#</div>#}
+{#{% endblock %}#}
+
 {% extends 'core/base.html' %}
 
 {% block title %}My account{% endblock %}
-<div class="max-w-6xl mx-auto p-6">
-    <h1 class="mb-5 text-3xl">My account</h1>
 
-</div>
 {% block content %}
-<h1 class="text-2xl">My account</h1>
-<a href="{% url 'edit_myaccount' %}" class="mt-4 inline-block py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Edit Account</a>
-<a href="{% url 'logout' %}" class="mt-6 inline-block py-4 px-8 bg-red-400 text-white">Log out</a>
+<div class="max-w-6xl mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h1 class="mb-5 text-3xl text-center text-teal-500">My account</h1>
+
+    <div class="space-y-3 text-lg text-gray-700">
+        <p><strong>First name:</strong> <span class="text-black">{{ request.user.first_name }}</span></p>
+        <p><strong>Last name:</strong> <span class="text-black">{{ request.user.last_name }}</span></p>
+        <p><strong>Username:</strong> <span class="text-black">{{ request.user.username }}</span></p>
+        <p><strong>Email:</strong> <span class="text-black">{{ request.user.email }}</span></p>
+    </div>
+
+    <div class="flex justify-center space-x-4 mt-6">
+        <a href="{% url 'edit_myaccount' %}" class="inline-block py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Edit Account</a>
+        <a href="{% url 'logout' %}" class="inline-block py-2 px-4 bg-red-400 rounded-lg text-white hover:bg-red-500">Log out</a>
+    </div>
+</div>
 {% endblock %}
